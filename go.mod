@@ -1,4 +1,4 @@
-module payment-api-serivce
+module payment-api-service
 
 go 1.18
 

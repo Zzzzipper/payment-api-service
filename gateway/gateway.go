@@ -16,9 +16,9 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 
-	pbPayment "payment-api-serivce/proto"
+	pbPayment "payment-api-service/proto"
 
-	"payment-api-serivce/third_party"
+	"payment-api-service/third_party"
 
 	"gitlab.mapcard.pro/external-map-team/grpc-gateway-pattern/insecure"
 )

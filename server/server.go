@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofrs/uuid"
 
-	pbPayment "payment-api-serivce/proto"
+	pbPayment "payment-api-service/proto"
 )
 
 // Backend implements the protobuf interface

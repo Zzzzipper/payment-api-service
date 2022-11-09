@@ -194,6 +194,6 @@
   },
   "externalDocs": {
     "description": "Payment API service repository",
-    "url": "https://gitlab.mapcard.pro/external-map-team/payment-api-serivce"
+    "url": "https://gitlab.mapcard.pro/external-map-team/payment-api-service"
   }
 }

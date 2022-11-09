@@ -7,7 +7,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 // Defines the import path that should be used to import the generated package,
 // and the package name.
-option go_package = "payment-api-serivce/proto;payment";
+option go_package = "payment-api-service/proto;payment";
 
 // These annotations are used when generating the OpenAPI file.
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -15,7 +15,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     version: "1.0";
   };
   external_docs: {
-    url: "https://gitlab.mapcard.pro/external-map-team/payment-api-serivce";
+    url: "https://gitlab.mapcard.pro/external-map-team/payment-api-service";
     description: "Payment API service repository";
   }
   schemes: HTTPS;
