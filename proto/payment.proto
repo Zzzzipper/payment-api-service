@@ -1,0 +1,203 @@
+syntax="proto3";
+
+package payment;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// Defines the import path that should be used to import the generated package,
+// and the package name.
+option go_package = "payment-api-serivce/proto;payment";
+
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "1.0";
+  };
+  external_docs: {
+    url: "https://gitlab.mapcard.pro/external-map-team/payment-api-serivce";
+    description: "Payment API service repository";
+  }
+  schemes: HTTPS;
+};
+
+service PaymentService {
+  rpc AddUser(AddUserRequest) returns (User) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/users
+      post: "/api/v1/users"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Add a user"
+      description: "Add a user to the server."
+      tags: "Users"
+    };
+  }
+  rpc ListUsers(ListUsersRequest) returns (stream User) {
+    option (google.api.http) = {
+      // Route to this method from GET requests to /api/v1/users
+      get: "/api/v1/users"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "List users"
+      description: "List all users on the server."
+      tags: "Users"
+    };
+  }
+  rpc Block(BlockRequest) returns (stream BlockHandler) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/block
+      post: "/api/v1/block"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Dms авторизация"
+      description: "Dms авторизация."
+      tags: "API"
+    };
+  }
+  /*
+  rpc Charge(ChargeRequest) returns (ChargeHandler) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/charge
+      post: "/api/v1/charge"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Dms списание"
+      description: "Dms списание."
+      tags: "API"
+    };
+  }
+  rpc Get(Order) returns (OrderStatus) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/get
+      post: "/api/v1/get"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Статус заказа"
+      description: "Статус заказа."
+      tags: "API"
+    };
+  }
+  rpc Init(OrderRequest) returns (Order) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/init
+      post: "/api/v1/init"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Инициализация заказа"
+      description: "Инициализация заказа."
+      tags: "API"
+    };
+  } 
+  rpc Pay(PayRequest) returns (Payment) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/pay
+      post: "/api/v1/pay"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Sms payment"
+      description: "Sma payment."
+      tags: "API"
+    };
+  }
+  rpc Payout(PayoutRequest) returns (PayoutHandler) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/payout
+      post: "/api/v1/payout"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Oct выплата"
+      description: "Oct выплата."
+      tags: "API"
+    };
+  }
+  rpc Refund(Order) returns (RefundHandler) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/refund
+      post: "/api/v1/refund"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Возврат по заказу"
+      description: "Возврат по заказу."
+      tags: "API"
+    };
+  }
+  rpc Void(Order) returns (VoidHandler) {
+    option (google.api.http) = {
+      // Route to this method from POST requests to /api/v1/void
+      post: "/api/v1/void"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Отмена заказа"
+      description: "Отмена заказа."
+      tags: "API"
+    };
+  }*/
+}
+
+message AddUserRequest {}
+
+message ListUsersRequest {}
+
+message User {
+  string id = 1;
+}
+
+message OrderRequest {
+}
+
+message Order {
+  string id = 1;
+}
+
+message PayRequest {
+  Order order = 1;
+}
+
+message Payment {
+  string id = 1;
+}
+
+message BlockRequest {
+  Payment payment = 1;
+} 
+
+message BlockHandler {
+  string id = 1;
+}
+
+message ChargeRequest {
+  BlockHandler block = 1;
+} 
+
+message ChargeHandler {
+  string id = 1;
+}
+
+message PayoutRequest {
+} 
+
+message PayoutHandler {
+  string id = 1;
+}
+
+message VoidHandler {
+  string id = 1;
+}
+
+message RefundHandler {
+  string id = 1;
+}
+
+message OrderStatus {
+  string status = 1;
+}
