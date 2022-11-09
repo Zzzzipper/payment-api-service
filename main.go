@@ -17,6 +17,7 @@ import (
 	"gitlab.mapcard.pro/external-map-team/grpc-gateway-pattern/insecure"
 )
 
+// version: 0.1.0
 func main() {
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
 	log := grpclog.NewLoggerV2(os.Stdout, ioutil.Discard, ioutil.Discard)
