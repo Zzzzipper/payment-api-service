@@ -23,7 +23,12 @@ func main() {
 	log := grpclog.NewLoggerV2(os.Stdout, ioutil.Discard, ioutil.Discard)
 	grpclog.SetLoggerV2(log)
 
-	addr := "0.0.0.0:10000"
+	port := os.Getenv("API_GRPC_PORT")
+	if port == "" {
+		port = "10000"
+	}
+
+	addr := "0.0.0.0:" + port
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalln("Failed to listen:", err)

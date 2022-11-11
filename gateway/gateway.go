@@ -60,7 +60,7 @@ func Run(dialAddr string) error {
 
 	oa := getOpenAPIHandler()
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SWAGGER_PORT")
 	if port == "" {
 		port = "11000"
 	}
