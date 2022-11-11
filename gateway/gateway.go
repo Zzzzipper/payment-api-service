@@ -20,7 +20,7 @@ import (
 
 	"payment-api-service/third_party"
 
-	"gitlab.mapcard.pro/external-map-team/grpc-gateway-pattern/insecure"
+	"payment-api-service/insecure"
 )
 
 // getOpenAPIHandler serves an OpenAPI UI.

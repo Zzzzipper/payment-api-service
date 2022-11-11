@@ -14,7 +14,7 @@ import (
 
 	"payment-api-service/gateway"
 
-	"gitlab.mapcard.pro/external-map-team/grpc-gateway-pattern/insecure"
+	"payment-api-service/insecure"
 )
 
 // version: 0.2.0
