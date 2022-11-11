@@ -17,7 +17,7 @@ import (
 	"payment-api-service/insecure"
 )
 
-// version: 0.2.0
+// version: 0.3.0
 func main() {
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
 	log := grpclog.NewLoggerV2(os.Stdout, ioutil.Discard, ioutil.Discard)
