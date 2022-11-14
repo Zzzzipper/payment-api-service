@@ -46,7 +46,7 @@
     REGISTRY_USER: ${HARBOR_USER_STAGE}
     REGISTRY_PWD: ${HARBOR_PWD_STAGE}
     REGISTRY_PATH: "registry.mapcard.pro/stage"
-    KUBE_NAMESPACE: feservices-evo
+    KUBE_NAMESPACE: map-advanced
     HELM_CHART_VERSION: latest
 
 .deploy-prod:
@@ -60,7 +60,7 @@
   extends:
     - .stage
     - .helm-deploy
-  tags: ["selectel-stage"]
+  tags: ["selectel-map-adv-stage"]
 
 .deploy-sha:
   variables:
