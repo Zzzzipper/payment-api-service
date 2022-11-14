@@ -60,21 +60,21 @@ service:
       protocol: TCP
 
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: boapi-stage.mapcard.pro
+    - host: api-rest-stage.mapcard.pro
       paths:
-        - path: /bovtb/?(.*)
+        - path: /
           pathType: Prefix
           servicePort: 8000
   tls:
    - secretName: tls-mc-secret
      hosts:
-       - boapi-stage.mapcard.pro
+       - api-rest-stage.mapcard.pro
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
