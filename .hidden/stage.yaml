@@ -1,0 +1,23 @@
+build-stage-image:
+  extends:
+    - .stage
+    - .build_image
+
+# Deploy
+deploy-stage-sha:
+  only:
+    changes:
+      - "app/*"
+      - "app/**/*"
+  extends:
+    - .deploy-stage
+    - .deploy-sha
+
+deploy-stage-latest:
+  except:
+    changes:
+      - "app/*"
+      - "app/**/*"
+  extends:
+    - .deploy-stage
+    - .deploy-latest

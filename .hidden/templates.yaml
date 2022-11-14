@@ -1,0 +1,91 @@
+.helm-deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl:3.6.3
+  only:
+    changes:
+      - "*"
+      - "**/*"  
+  script:
+    - echo ${IMAGE_TAG}
+    - export HELM_EXPERIMENTAL_OCI=1
+    - CHART_NAME="helm-${SERVICE_NAME}"
+    - CHART_FULL_NAME="${CHART_NAME}-${ENVIRONMENT}"
+    - echo ${CHART_FULL_NAME}
+    - echo ${CHART_NAME}
+    - helm registry login -u ${REGISTRY_USER} -p "${REGISTRY_PWD}" https://${HELM_REPO}
+    - helm chart pull ${HELM_REPO}/${CHART_FULL_NAME}:${HELM_CHART_VERSION}
+    - helm chart export ${HELM_REPO}/${CHART_FULL_NAME}:${HELM_CHART_VERSION}
+    - ls -alh
+    - helm upgrade --install --atomic ${RELEASE_NAME} ./${SERVICE_NAME} --namespace ${KUBE_NAMESPACE} --values ./values/values-${ENVIRONMENT}.yaml --set-string image.tag=${IMAGE_TAG}
+
+.prod:
+  only:
+    refs:
+      - master
+  variables:
+    ENVIRONMENT: prod
+    HELM_REPO: "registry.mapcard.pro/helm-prod"
+    REGISTRY_USER: ${HARBOR_USER_PROD}
+    REGISTRY_PWD: ${HARBOR_PWD_PROD}
+    REGISTRY_PATH: "registry.mapcard.pro/production"
+    KUBE_NAMESPACE: feservices
+    HELM_CHART_VERSION: latest
+
+.stage:
+  only:
+    refs:
+      - /^fix.*$/
+      - /^release.*$/
+      - /^feature.*$/
+      - stage
+      - tests
+      # - develop
+  variables:
+    ENVIRONMENT: stage
+    HELM_REPO: "registry.mapcard.pro/helm-stage"
+    REGISTRY_USER: ${HARBOR_USER_STAGE}
+    REGISTRY_PWD: ${HARBOR_PWD_STAGE}
+    REGISTRY_PATH: "registry.mapcard.pro/stage"
+    KUBE_NAMESPACE: feservices-evo
+    HELM_CHART_VERSION: latest
+
+.deploy-prod:
+  extends:
+    - .prod
+    - .helm-deploy
+  when: manual
+  tags: ["selectel-prod"]
+
+.deploy-stage:
+  extends:
+    - .stage
+    - .helm-deploy
+  tags: ["selectel-stage"]
+
+.deploy-sha:
+  variables:
+    IMAGE_TAG: ${CI_COMMIT_SHA}
+
+.deploy-latest:
+  variables:
+    IMAGE_TAG: latest
+
+.build_image:
+  image: docker:19.03.8
+  only:
+    changes:
+      - "app/*"
+      - "app/**/*"
+  services:
+    - docker:18.09-dind
+  stage: build
+  script:
+    - IMAGE_NAME=${BINARY_NAME}-${ENVIRONMENT}
+    - docker login -u ${REGISTRY_USER} -p "${REGISTRY_PWD}" https://${REGISTRY_PATH}
+    # - docker pull ${REGISTRY_PATH}/${IMAGE_NAME}:latest || true
+    - echo $DOCKER_BUILD_ARGS
+    - docker build ${DOCKER_BUILD_ARGS} -t ${IMAGE_NAME}:latest . 
+    - docker tag ${IMAGE_NAME}:latest ${REGISTRY_PATH}/${IMAGE_NAME}:latest
+    - docker tag ${IMAGE_NAME}:latest ${REGISTRY_PATH}/${IMAGE_NAME}:$CI_COMMIT_SHA
+    - docker push ${REGISTRY_PATH}/${IMAGE_NAME}:latest
+    - docker push ${REGISTRY_PATH}/${IMAGE_NAME}:${CI_COMMIT_SHA}

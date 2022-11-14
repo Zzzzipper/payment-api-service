@@ -1,0 +1,17 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://localhost:2375
+  REPO_NAME: payment-api
+  DOCKER_BUILD_ARGS: ""
+  BINARY_NAME: payment-api
+  RELEASE_NAME: payment-api
+  SERVICE_NAME: payment-api
+
+stages:
+  - build
+  - deploy
+
+include:
+  - local: ".hidden/templates.yaml"
+  - local: ".hidden/stage.yaml"
+  - local: ".hidden/prod.yaml"
