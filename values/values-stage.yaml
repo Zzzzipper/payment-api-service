@@ -107,7 +107,7 @@ tolerations: []
 affinity: {}
 
 envConfig:
-  SWAGGER_PORT: 9000
-  API_GRPC_PORT: 8000
+  SWAGGER_PORT: "9000"
+  API_GRPC_PORT: "8000"
   MERCHANT_GRPC_ADDRESS: "merchants-api:8080"
 
