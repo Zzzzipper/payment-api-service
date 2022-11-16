@@ -12,16 +12,17 @@ option go_package = "payment-api-service/proto;payment";
 // These annotations are used when generating the OpenAPI file.
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    version: "1.0";
+    version: "0.1.0";
   };
   external_docs: {
     url: "https://gitlab.mapcard.pro/external-map-team/payment-api-service";
     description: "Payment API service repository";
   }
-  schemes: HTTPS;
+  schemes:[HTTP, HTTPS];
 };
 
 service PaymentService {
+  /*
   rpc AddUser(AddUserRequest) returns (User) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/users
@@ -45,7 +46,8 @@ service PaymentService {
       tags: "Users"
     };
   }
-  rpc Block(BlockRequest) returns (stream BlockHandler) {
+  */
+  rpc Block(BlockRequest) returns (BlockHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/block
       post: "/api/v1/block"
@@ -57,7 +59,6 @@ service PaymentService {
       tags: "API"
     };
   }
-  /*
   rpc Charge(ChargeRequest) returns (ChargeHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/charge
@@ -141,7 +142,7 @@ service PaymentService {
       description: "Отмена заказа."
       tags: "API"
     };
-  }*/
+  }
 }
 
 message AddUserRequest {}

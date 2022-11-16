@@ -60,11 +60,12 @@ func Run(dialAddr string) error {
 
 	oa := getOpenAPIHandler()
 
-	port := os.Getenv("SWAGGER_PORT")
-	if port == "" {
-		port = "11000"
+	httpPort := os.Getenv("SWAGGER_PORT")
+	if httpPort == "" {
+		httpPort = "11000"
 	}
-	gatewayAddr := "0.0.0.0:" + port
+	gatewayAddr := "0.0.0.0:" + httpPort
+
 	gwServer := &http.Server{
 		Addr: gatewayAddr,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

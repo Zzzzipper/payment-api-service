@@ -4,15 +4,12 @@ import (
 	"context"
 	"sync"
 
-	"github.com/gofrs/uuid"
-
 	pbPayment "payment-api-service/proto"
 )
 
 // Backend implements the protobuf interface
 type Backend struct {
-	mu    *sync.RWMutex
-	users []*pbPayment.User
+	mu *sync.RWMutex
 }
 
 // New initializes a new Backend struct.
@@ -22,6 +19,8 @@ func New() *Backend {
 	}
 }
 
+// Examples
+/*
 // AddUser adds a user to the in-memory store.
 func (b *Backend) AddUser(ctx context.Context, _ *pbPayment.AddUserRequest) (*pbPayment.User, error) {
 	b.mu.Lock()
@@ -49,17 +48,92 @@ func (b *Backend) ListUsers(_ *pbPayment.ListUsersRequest, srv pbPayment.Payment
 
 	return nil
 }
+*/
 
-func (b *Backend) Block(in *pbPayment.BlockRequest, out pbPayment.PaymentService_BlockServer) error {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
+func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPayment.BlockHandler, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
-	block := pbPayment.BlockHandler{Id: "test"}
-
-	err := out.Send(&block)
-	if err != nil {
-		return err
+	block := &pbPayment.BlockHandler{
+		Id: "block_handler",
 	}
 
-	return nil
+	return block, nil
+}
+
+func (b *Backend) Charge(ctx context.Context, in *pbPayment.ChargeRequest) (*pbPayment.ChargeHandler, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	charge := &pbPayment.ChargeHandler{
+		Id: "charge_handler",
+	}
+
+	return charge, nil
+}
+
+func (b *Backend) Get(ctx context.Context, in *pbPayment.Order) (*pbPayment.OrderStatus, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	status := &pbPayment.OrderStatus{
+		Status: "status ok",
+	}
+
+	return status, nil
+}
+
+func (b *Backend) Init(ctx context.Context, in *pbPayment.OrderRequest) (*pbPayment.Order, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	order := &pbPayment.Order{
+		Id: "order ",
+	}
+
+	return order, nil
+}
+
+func (b *Backend) Pay(ctx context.Context, in *pbPayment.PayRequest) (*pbPayment.Payment, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	payment := &pbPayment.Payment{
+		Id: "block_handler",
+	}
+
+	return payment, nil
+}
+
+func (b *Backend) Payout(ctx context.Context, in *pbPayment.PayoutRequest) (*pbPayment.PayoutHandler, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	payout := &pbPayment.PayoutHandler{
+		Id: "block_handler",
+	}
+
+	return payout, nil
+}
+
+func (b *Backend) Refund(ctx context.Context, in *pbPayment.Order) (*pbPayment.RefundHandler, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	refund := &pbPayment.RefundHandler{
+		Id: "block_handler",
+	}
+
+	return refund, nil
+}
+
+func (b *Backend) Void(ctx context.Context, in *pbPayment.Order) (*pbPayment.VoidHandler, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+
+	void := &pbPayment.VoidHandler{
+		Id: "block_handler",
+	}
+
+	return void, nil
 }

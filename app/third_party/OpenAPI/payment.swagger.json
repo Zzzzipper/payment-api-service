@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "payment.proto",
-    "version": "1.0"
+    "version": "0.1.0"
   },
   "tags": [
     {
@@ -10,6 +10,7 @@
     }
   ],
   "schemes": [
+    "http",
     "https"
   ],
   "consumes": [
@@ -26,18 +27,9 @@
         "operationId": "PaymentService_Block",
         "responses": {
           "200": {
-            "description": "A successful response.(streaming responses)",
+            "description": "A successful response.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/paymentBlockHandler"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of paymentBlockHandler"
+              "$ref": "#/definitions/paymentBlockHandler"
             }
           },
           "default": {
@@ -62,47 +54,16 @@
         ]
       }
     },
-    "/api/v1/users": {
-      "get": {
-        "summary": "List users",
-        "description": "List all users on the server.",
-        "operationId": "PaymentService_ListUsers",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/paymentUser"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of paymentUser"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "Users"
-        ]
-      },
+    "/api/v1/charge": {
       "post": {
-        "summary": "Add a user",
-        "description": "Add a user to the server.",
-        "operationId": "PaymentService_AddUser",
+        "summary": "Dms списание",
+        "description": "Dms списание.",
+        "operationId": "PaymentService_Charge",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentUser"
+              "$ref": "#/definitions/paymentChargeHandler"
             }
           },
           "default": {
@@ -118,20 +79,221 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentAddUserRequest"
+              "$ref": "#/definitions/paymentChargeRequest"
             }
           }
         ],
         "tags": [
-          "Users"
+          "API"
+        ]
+      }
+    },
+    "/api/v1/get": {
+      "post": {
+        "summary": "Статус заказа",
+        "description": "Статус заказа.",
+        "operationId": "PaymentService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentOrderStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentOrder"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/v1/init": {
+      "post": {
+        "summary": "Инициализация заказа",
+        "description": "Инициализация заказа.",
+        "operationId": "PaymentService_Init",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentOrder"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/v1/pay": {
+      "post": {
+        "summary": "Sms payment",
+        "description": "Sma payment.",
+        "operationId": "PaymentService_Pay",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentPayment"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentPayRequest"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/v1/payout": {
+      "post": {
+        "summary": "Oct выплата",
+        "description": "Oct выплата.",
+        "operationId": "PaymentService_Payout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentPayoutHandler"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentPayoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/v1/refund": {
+      "post": {
+        "summary": "Возврат по заказу",
+        "description": "Возврат по заказу.",
+        "operationId": "PaymentService_Refund",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentRefundHandler"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentOrder"
+            }
+          }
+        ],
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/api/v1/void": {
+      "post": {
+        "summary": "Отмена заказа",
+        "description": "Отмена заказа.",
+        "operationId": "PaymentService_Void",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/paymentVoidHandler"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/paymentOrder"
+            }
+          }
+        ],
+        "tags": [
+          "API"
         ]
       }
     }
   },
   "definitions": {
-    "paymentAddUserRequest": {
-      "type": "object"
-    },
     "paymentBlockHandler": {
       "type": "object",
       "properties": {
@@ -148,6 +310,49 @@
         }
       }
     },
+    "paymentChargeHandler": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "paymentChargeRequest": {
+      "type": "object",
+      "properties": {
+        "block": {
+          "$ref": "#/definitions/paymentBlockHandler"
+        }
+      }
+    },
+    "paymentOrder": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "paymentOrderRequest": {
+      "type": "object"
+    },
+    "paymentOrderStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "paymentPayRequest": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "$ref": "#/definitions/paymentOrder"
+        }
+      }
+    },
     "paymentPayment": {
       "type": "object",
       "properties": {
@@ -156,7 +361,26 @@
         }
       }
     },
-    "paymentUser": {
+    "paymentPayoutHandler": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "paymentPayoutRequest": {
+      "type": "object"
+    },
+    "paymentRefundHandler": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "paymentVoidHandler": {
       "type": "object",
       "properties": {
         "id": {
