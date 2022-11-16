@@ -18,7 +18,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     url: "https://gitlab.mapcard.pro/external-map-team/payment-api-service";
     description: "Payment API service repository";
   }
-  schemes:[HTTP, HTTPS];
+  schemes:[HTTPS];
 };
 
 service PaymentService {
