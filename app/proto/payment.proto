@@ -321,71 +321,71 @@ message PayoutInfo {
 }
 
 message BlockHandler {
-  bool success = 1 	[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  bool Success = 1 	[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Флаг успешности операции	true/false",
     format: "true,false"
   }];	
-  string merchant_order_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string OrderId = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Идентификатор платежа в системе Продавца",
     format: "string"
   }];
-  uint32 amount  = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  uint32 Amount  = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Заблокированная сумма. Передается, если в ответе Success=true",
     format: "integer"
   }];	
-  string autcode = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string AuthCode = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Код авторизации",
     format: "string"
   }];	
-  string errcode = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string ErrCode = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Описание ошибки. Передается, если в ответе Success=false",
     format: "string"
   }];	
-  string errmessage = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string ErrMessage = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Опциональный параметр. Дополнительное описание ошибки",
     format: "string"
   }];
-  string ascUrl = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string ACSUrl = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Адрес (URL/URI) сервера аутентификации 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
     format: "string"
   }];
-  string paReq = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string PaReq = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Запрос на аутентификацию 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
     format: "string"
   }];
-  string threeDSKey = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string ThreeDSKey = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Уникальный идентификатор транзакции. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
     format: "string"
   }];
-  string rrn = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string RRN = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "RRN операции",
     format: "string"
   }];
-  string panMask = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string PANMask = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Маскированный номер карты в формате 123456xxxxxx1234",
     format: "string"
   }];
-  string bankName = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string BankName = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Наименование Банка-эмитента",
     format: "string"
   }];
-  string processingResponse = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string ProcessingResponse = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Оригинальный отказ эквайера",
     format: "string"
   }];
-  KeyValueArray custom_params_rdy = 14 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  KeyValueArray CustomParams = 14 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Список дополнительных параметров операции",
     format: "object"
   }];
-  uint32 feePercent  = 15 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  uint32 FeePercent  = 15 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Ставка комиссии за эквайринг",
     format: "integer"
   }];
-  uint32 terminalId  = 16 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  uint32 TerminalID  = 16 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "ID терминала в системе MAP, по которому фактически выполнена операция",
     format: "integer"
   }];
-  string sourceOffice = 17 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string SourceOffice = 17 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Идентификатор организации при оплате в GDS",
     format: "string"
   }];

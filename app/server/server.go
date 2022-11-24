@@ -1,10 +1,15 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
 	"sync"
+	"time"
 
 	pbPayment "payment-api-service/proto"
 
@@ -70,16 +75,72 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 		fmt.Println(md)
 	}
 
-	json, err := json.Marshal(in)
+	body, err := json.Marshal(in)
 	if err == nil {
-		fmt.Println(string(json))
+		fmt.Println(string(body))
 	} else {
 		fmt.Printf("can't marshall block request: %s", err.Error())
 		fmt.Println("BlockRequest", in)
 	}
 
-	block := &pbPayment.BlockHandler{
-		MerchantOrderId: "dshaqdcncqcnjqwcniqwcnwie",
+	var block *pbPayment.BlockHandler
+
+	requestURL := os.Getenv("MAPAPI_ADDR")
+	if requestURL != "" {
+		bodyReader := bytes.NewReader(body)
+
+		req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
+		if err != nil {
+			fmt.Printf("client: could not create request: %s\n", err)
+			os.Exit(1)
+		}
+
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("Content-Type", "application/json")
+
+		client := http.Client{
+			Timeout: 30 * time.Second,
+		}
+
+		var res *http.Response
+		res, err = client.Do(req)
+		if err != nil {
+			fmt.Printf("client: error making http request: %s\n", err)
+			block = &pbPayment.BlockHandler{
+				Success:    false,
+				ErrCode:    "COMMUNICATE_ERROR",
+				ErrMessage: "failed connection to MAP API",
+			}
+		} else {
+			resBody, err := ioutil.ReadAll(res.Body)
+			if err != nil {
+				fmt.Printf("client: could not read response body: %s\n", err)
+				block = &pbPayment.BlockHandler{
+					Success:    false,
+					ErrCode:    "EMPTY_RESPONSE",
+					ErrMessage: "processing error",
+				}
+			}
+			fmt.Printf("client: response body: %s\n", resBody)
+
+			block = &pbPayment.BlockHandler{}
+
+			err = json.Unmarshal(resBody, block)
+			if err != nil {
+				fmt.Printf("client: could not parse response body: %s\n", err)
+				block = &pbPayment.BlockHandler{
+					Success:    false,
+					ErrCode:    "ENCODING_ERROR",
+					ErrMessage: "encoding response error",
+				}
+			}
+		}
+	} else {
+		block = &pbPayment.BlockHandler{
+			Success:    false,
+			ErrCode:    "NOT_FOUND",
+			ErrMessage: "address MAP API not present",
+		}
 	}
 
 	return block, nil

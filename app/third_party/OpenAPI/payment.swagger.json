@@ -2,12 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "proto/payment.proto",
-    "version": "0.1.0"
+    "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -292,87 +288,87 @@
     "paymentBlockHandler": {
       "type": "object",
       "properties": {
-        "success": {
+        "Success": {
           "type": "boolean",
           "format": "true,false",
           "description": "Флаг успешности операции\ttrue/false"
         },
-        "merchant_order_id": {
+        "OrderId": {
           "type": "string",
           "format": "string",
           "description": "Идентификатор платежа в системе Продавца"
         },
-        "amount": {
+        "Amount": {
           "type": "integer",
           "format": "integer",
           "description": "Заблокированная сумма. Передается, если в ответе Success=true"
         },
-        "autcode": {
+        "AuthCode": {
           "type": "string",
           "format": "string",
           "description": "Код авторизации"
         },
-        "errcode": {
+        "ErrCode": {
           "type": "string",
           "format": "string",
           "description": "Описание ошибки. Передается, если в ответе Success=false"
         },
-        "errmessage": {
+        "ErrMessage": {
           "type": "string",
           "format": "string",
           "description": "Опциональный параметр. Дополнительное описание ошибки"
         },
-        "ascUrl": {
+        "ACSUrl": {
           "type": "string",
           "format": "string",
           "description": "Адрес (URL/URI) сервера аутентификации 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
         },
-        "paReq": {
+        "PaReq": {
           "type": "string",
           "format": "string",
           "description": "Запрос на аутентификацию 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
         },
-        "threeDSKey": {
+        "ThreeDSKey": {
           "type": "string",
           "format": "string",
           "description": "Уникальный идентификатор транзакции. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
         },
-        "rrn": {
+        "RRN": {
           "type": "string",
           "format": "string",
           "description": "RRN операции"
         },
-        "panMask": {
+        "PANMask": {
           "type": "string",
           "format": "string",
           "description": "Маскированный номер карты в формате 123456xxxxxx1234"
         },
-        "bankName": {
+        "BankName": {
           "type": "string",
           "format": "string",
           "description": "Наименование Банка-эмитента"
         },
-        "processingResponse": {
+        "ProcessingResponse": {
           "type": "string",
           "format": "string",
           "description": "Оригинальный отказ эквайера"
         },
-        "custom_params_rdy": {
+        "CustomParams": {
           "format": "object",
           "$ref": "#/definitions/paymentKeyValueArray",
           "description": "Список дополнительных параметров операции"
         },
-        "feePercent": {
+        "FeePercent": {
           "type": "integer",
           "format": "integer",
           "description": "Ставка комиссии за эквайринг"
         },
-        "terminalId": {
+        "TerminalID": {
           "type": "integer",
           "format": "integer",
           "description": "ID терминала в системе MAP, по которому фактически выполнена операция"
         },
-        "sourceOffice": {
+        "SourceOffice": {
           "type": "string",
           "format": "string",
           "description": "Идентификатор организации при оплате в GDS"
@@ -682,9 +678,5 @@
         }
       }
     }
-  },
-  "externalDocs": {
-    "description": "Payment API service repository",
-    "url": "https://gitlab.mapcard.pro/external-map-team/payment-api-service"
   }
 }
