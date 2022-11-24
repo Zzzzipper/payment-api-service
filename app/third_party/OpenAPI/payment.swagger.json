@@ -1,15 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "payment.proto",
+    "title": "proto/payment.proto",
     "version": "0.1.0"
   },
-  "tags": [
-    {
-      "name": "PaymentService"
-    }
-  ],
   "schemes": [
+    "http",
     "https"
   ],
   "consumes": [
@@ -34,7 +30,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -68,7 +64,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -102,7 +98,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -136,7 +132,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -170,7 +166,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -204,7 +200,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -238,7 +234,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -272,7 +268,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -296,16 +292,140 @@
     "paymentBlockHandler": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
+        "success": {
+          "type": "boolean",
+          "format": "true,false",
+          "description": "Флаг успешности операции\ttrue/false"
+        },
+        "merchant_order_id": {
+          "type": "string",
+          "format": "string",
+          "description": "Идентификатор платежа в системе Продавца"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Заблокированная сумма. Передается, если в ответе Success=true"
+        },
+        "autcode": {
+          "type": "string",
+          "format": "string",
+          "description": "Код авторизации"
+        },
+        "errcode": {
+          "type": "string",
+          "format": "string",
+          "description": "Описание ошибки. Передается, если в ответе Success=false"
+        },
+        "errmessage": {
+          "type": "string",
+          "format": "string",
+          "description": "Опциональный параметр. Дополнительное описание ошибки"
+        },
+        "ascUrl": {
+          "type": "string",
+          "format": "string",
+          "description": "Адрес (URL/URI) сервера аутентификации 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
+        },
+        "paReq": {
+          "type": "string",
+          "format": "string",
+          "description": "Запрос на аутентификацию 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
+        },
+        "threeDSKey": {
+          "type": "string",
+          "format": "string",
+          "description": "Уникальный идентификатор транзакции. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true"
+        },
+        "rrn": {
+          "type": "string",
+          "format": "string",
+          "description": "RRN операции"
+        },
+        "panMask": {
+          "type": "string",
+          "format": "string",
+          "description": "Маскированный номер карты в формате 123456xxxxxx1234"
+        },
+        "bankName": {
+          "type": "string",
+          "format": "string",
+          "description": "Наименование Банка-эмитента"
+        },
+        "processingResponse": {
+          "type": "string",
+          "format": "string",
+          "description": "Оригинальный отказ эквайера"
+        },
+        "custom_params_rdy": {
+          "format": "object",
+          "$ref": "#/definitions/paymentKeyValueArray",
+          "description": "Список дополнительных параметров операции"
+        },
+        "feePercent": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Ставка комиссии за эквайринг"
+        },
+        "terminalId": {
+          "type": "integer",
+          "format": "integer",
+          "description": "ID терминала в системе MAP, по которому фактически выполнена операция"
+        },
+        "sourceOffice": {
+          "type": "string",
+          "format": "string",
+          "description": "Идентификатор организации при оплате в GDS"
         }
       }
     },
     "paymentBlockRequest": {
       "type": "object",
       "properties": {
-        "payment": {
-          "$ref": "#/definitions/paymentPayment"
+        "key": {
+          "type": "string",
+          "format": "string",
+          "description": "Идентификатор Продавца. Выдается с параметрами тестового/боевого доступа"
+        },
+        "card": {
+          "format": "object",
+          "$ref": "#/definitions/paymentPayInfo",
+          "description": "Данные карты для совершения транзакции"
+        },
+        "payment_token": {
+          "format": "object",
+          "$ref": "#/definitions/paymentPaymentToken",
+          "description": "Токен gpay/applepay/samsungpay"
+        },
+        "merchant_order_id": {
+          "type": "string",
+          "format": "string",
+          "description": "Идентификатор платежа в системе Продавца"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Сумма платежа в копейках (или другая минимальная единица валюты терминала)"
+        },
+        "credential": {
+          "format": "object",
+          "$ref": "#/definitions/paymentCredential",
+          "description": "Подтверждение прав доступа и информация об операторе"
+        },
+        "custom_params_rdy": {
+          "format": "object",
+          "$ref": "#/definitions/paymentKeyValueArray",
+          "description": "Список дополнительных параметров операции в формате 'ключ - значение'"
+        },
+        "split": {
+          "format": "object",
+          "$ref": "#/definitions/paymentSplit",
+          "description": "Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами. Общая сумма всех составных частей должна соответствовать amount"
+        },
+        "payout_info": {
+          "format": "object",
+          "$ref": "#/definitions/paymentPayoutInfo",
+          "description": "Номер карты для зачисления средств, обязательный при операция C2C"
         }
       }
     },
@@ -322,6 +442,63 @@
       "properties": {
         "block": {
           "$ref": "#/definitions/paymentBlockHandler"
+        }
+      }
+    },
+    "paymentCredential": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string",
+          "format": "string",
+          "description": "Логин держателя карты, зарегистрированного в системе Продавца. Используются только в случае, если карта сохранена к конкретному пользователю"
+        },
+        "password": {
+          "type": "string",
+          "format": "string",
+          "description": "Пароль держателя карты, зарегистрированного в системе Продавца. Используются только в случае, если карта сохранена к конкретному пользователю"
+        },
+        "merchant_name": {
+          "type": "string",
+          "format": "string",
+          "description": "Наименование продавца. Используются только в случае, если карта сохранена за Мерчантом"
+        },
+        "merchant_password": {
+          "type": "string",
+          "format": "string",
+          "description": "Пароль Мерчанта для совершения операций. Используются только в случае, если карта сохранена за Мерчантом"
+        },
+        "terminal_password": {
+          "type": "string",
+          "format": "string",
+          "description": "Пароль терминала для совершения операций. Используются только в случае, если карта сохранена за терминалом"
+        }
+      }
+    },
+    "paymentKeyValue": {
+      "type": "object",
+      "properties": {
+        "Key": {
+          "type": "string",
+          "format": "string",
+          "description": "Ключ значения"
+        },
+        "Value": {
+          "type": "string",
+          "format": "string",
+          "description": "Значение"
+        }
+      }
+    },
+    "paymentKeyValueArray": {
+      "type": "object",
+      "properties": {
+        "key_value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/paymentKeyValue"
+          },
+          "description": "Массив ключ-значение"
         }
       }
     },
@@ -344,6 +521,41 @@
         }
       }
     },
+    "paymentPayInfo": {
+      "type": "object",
+      "properties": {
+        "pan": {
+          "type": "string",
+          "format": "string",
+          "description": "Номер карты"
+        },
+        "emonth": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Месяц истечения срока действия карты"
+        },
+        "eyear": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Год истечения срока действия карты"
+        },
+        "cvv": {
+          "type": "integer",
+          "format": "integer",
+          "description": "CVC2/CVV2. Параметр является опциональным"
+        },
+        "card_holder": {
+          "type": "string",
+          "format": "string",
+          "description": "Фамилия и имя держателя карты"
+        },
+        "uid": {
+          "type": "string",
+          "format": "string",
+          "description": "Идентификатор карты в системе theMAP или значение «Random». При указании значения «Random» выбирается случайная карта из привязанных к данному пользователю"
+        }
+      }
+    },
     "paymentPayRequest": {
       "type": "object",
       "properties": {
@@ -360,11 +572,36 @@
         }
       }
     },
+    "paymentPaymentToken": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "format": "string",
+          "description": "Тип токена"
+        },
+        "data": {
+          "type": "string",
+          "format": "string",
+          "description": "Данные токена"
+        }
+      }
+    },
     "paymentPayoutHandler": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
+        }
+      }
+    },
+    "paymentPayoutInfo": {
+      "type": "object",
+      "properties": {
+        "pan": {
+          "type": "string",
+          "format": "string",
+          "description": "Номер карты для зачисления средств, обязательный при операция C2C"
         }
       }
     },
@@ -379,6 +616,31 @@
         }
       }
     },
+    "paymentSplit": {
+      "type": "object",
+      "properties": {
+        "split_terminal_id": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Номер терминала для проведения операции"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Сумма разделения"
+        },
+        "purpose": {
+          "type": "string",
+          "format": "string",
+          "description": "Описание"
+        },
+        "fee": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Размер комиссии"
+        }
+      }
+    },
     "paymentVoidHandler": {
       "type": "object",
       "properties": {
@@ -390,15 +652,21 @@
     "protobufAny": {
       "type": "object",
       "properties": {
-        "@type": {
+        "type_url": {
           "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
         }
-      },
-      "additionalProperties": {}
+      }
     },
-    "rpcStatus": {
+    "runtimeError": {
       "type": "object",
       "properties": {
+        "error": {
+          "type": "string"
+        },
         "code": {
           "type": "integer",
           "format": "int32"

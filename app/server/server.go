@@ -2,9 +2,15 @@ package server
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"sync"
 
 	pbPayment "payment-api-service/proto"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 )
 
 // Backend implements the protobuf interface
@@ -51,17 +57,40 @@ func (b *Backend) ListUsers(_ *pbPayment.ListUsersRequest, srv pbPayment.Payment
 */
 
 func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPayment.BlockHandler, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
+	md, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		fmt.Println(md)
+	}
+
+	json, err := json.Marshal(in)
+	if err == nil {
+		fmt.Println(string(json))
+	} else {
+		fmt.Printf("can't marshall block request: %s", err.Error())
+		fmt.Println("BlockRequest", in)
+	}
+
 	block := &pbPayment.BlockHandler{
-		Id: "block_handler",
+		MerchantOrderId: "dshaqdcncqcnjqwcniqwcnwie",
 	}
 
 	return block, nil
 }
 
 func (b *Backend) Charge(ctx context.Context, in *pbPayment.ChargeRequest) (*pbPayment.ChargeHandler, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -73,6 +102,11 @@ func (b *Backend) Charge(ctx context.Context, in *pbPayment.ChargeRequest) (*pbP
 }
 
 func (b *Backend) Get(ctx context.Context, in *pbPayment.Order) (*pbPayment.OrderStatus, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -84,6 +118,11 @@ func (b *Backend) Get(ctx context.Context, in *pbPayment.Order) (*pbPayment.Orde
 }
 
 func (b *Backend) Init(ctx context.Context, in *pbPayment.OrderRequest) (*pbPayment.Order, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -95,6 +134,11 @@ func (b *Backend) Init(ctx context.Context, in *pbPayment.OrderRequest) (*pbPaym
 }
 
 func (b *Backend) Pay(ctx context.Context, in *pbPayment.PayRequest) (*pbPayment.Payment, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -106,6 +150,11 @@ func (b *Backend) Pay(ctx context.Context, in *pbPayment.PayRequest) (*pbPayment
 }
 
 func (b *Backend) Payout(ctx context.Context, in *pbPayment.PayoutRequest) (*pbPayment.PayoutHandler, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -117,6 +166,11 @@ func (b *Backend) Payout(ctx context.Context, in *pbPayment.PayoutRequest) (*pbP
 }
 
 func (b *Backend) Refund(ctx context.Context, in *pbPayment.Order) (*pbPayment.RefundHandler, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
@@ -128,6 +182,11 @@ func (b *Backend) Refund(ctx context.Context, in *pbPayment.Order) (*pbPayment.R
 }
 
 func (b *Backend) Void(ctx context.Context, in *pbPayment.Order) (*pbPayment.VoidHandler, error) {
+	_, ok := GetUserMetadata(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
+	}
+
 	b.mu.Lock()
 	defer b.mu.Unlock()
 

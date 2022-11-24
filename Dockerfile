@@ -7,5 +7,4 @@ RUN cd /src/payment-api-service && go build -o /app
 # Production stage
 FROM scratch
 COPY --from=build-env /app /
-
 ENTRYPOINT ["/app"]

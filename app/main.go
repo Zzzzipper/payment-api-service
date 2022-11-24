@@ -1,9 +1,12 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"net"
 	"os"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -15,6 +18,14 @@ import (
 	"payment-api-service/gateway"
 
 	"payment-api-service/insecure"
+
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+)
+
+var (
+	username = flag.String("username", "user", "The username to authenticate with")
+	password = flag.String("password", "1234", "The password to authenticate with")
+	token    = flag.String("token", "testtoken", "The token to authenticate with")
 )
 
 // version: 0.3.0
@@ -38,13 +49,34 @@ func main() {
 	}
 	defer listener.Close()
 
-	grpcServer := grpc.NewServer(
-		// TODO: Replace with your own certificate!
-		grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
-	)
+	auther := server.Authenticator{
+		Username: *username,
+		Password: *password,
+		Token:    *token,
+	}
+
+	var grpcServer *grpc.Server
+	var protocol string
+
+	if strings.ToLower(os.Getenv("SERVE_HTTP")) == "true" {
+		grpcServer = grpc.NewServer(
+			grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auther.Authenticate)),
+			grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auther.Authenticate)),
+		)
+		protocol = "http"
+	} else {
+		grpcServer = grpc.NewServer(
+			// TODO: Replace with your own certificate!
+			grpc.Creds(credentials.NewServerTLSFromCert(&insecure.Cert)),
+			grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auther.Authenticate)),
+			grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auther.Authenticate)),
+		)
+		protocol = "https"
+	}
+
 	pbPayment.RegisterPaymentServiceServer(grpcServer, server.New())
 
-	log.Info("Serving gRPC on https://", grpcAddr)
+	log.Info(fmt.Sprintf("Serving gRPC on %s://%d", protocol, grpcAddr))
 
 	// Serve gRPC Server
 	go func() {

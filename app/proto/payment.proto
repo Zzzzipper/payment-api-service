@@ -7,9 +7,11 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 // Defines the import path that should be used to import the generated package,
 // and the package name.
-option go_package = "payment-api-service/proto;payment";
+option go_package = "/proto;payment";
 
+// BloomRPC meta: {"authorization": "Basic dXNlcjoxMjM0"}
 // These annotations are used when generating the OpenAPI file.
+/*
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     version: "0.1.0";
@@ -18,8 +20,9 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     url: "https://gitlab.mapcard.pro/external-map-team/payment-api-service";
     description: "Payment API service repository";
   }
-  schemes:[HTTPS];
+  schemes:[HTTP,HTTPS];
 };
+*/
 
 service PaymentService {
   /*
@@ -47,99 +50,105 @@ service PaymentService {
     };
   }
   */
+  // Block
+  //
+  // {{.MethodDescriptorProto.Name}} is a call with the method(s) {{$first := true}}{{range .Bindings}}{{if $first}}{{$first = false}}{{else}}, {{end}}{{.HTTPMethod}}{{end}} within the "{{.Service.Name}}" service.
+  // It takes in "{{.RequestType.Name}}" and returns a "{{.ResponseType.Name}}".
+  //
+  // {{import "tables.md"}}
   rpc Block(BlockRequest) returns (BlockHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/block
-      post: "/api/v1/block"
+      post: "/api/v1/block",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Dms авторизация"
-      description: "Dms авторизация."
+      summary: "Dms авторизация",
+      description: "Dms авторизация.",
       tags: "API"
     };
   }
   rpc Charge(ChargeRequest) returns (ChargeHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/charge
-      post: "/api/v1/charge"
+      post: "/api/v1/charge",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Dms списание"
-      description: "Dms списание."
+      summary: "Dms списание",
+      description: "Dms списание.",
       tags: "API"
     };
   }
   rpc Get(Order) returns (OrderStatus) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/get
-      post: "/api/v1/get"
+      post: "/api/v1/get",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Статус заказа"
-      description: "Статус заказа."
+      summary: "Статус заказа",
+      description: "Статус заказа.",
       tags: "API"
     };
   }
   rpc Init(OrderRequest) returns (Order) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/init
-      post: "/api/v1/init"
+      post: "/api/v1/init",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Инициализация заказа"
-      description: "Инициализация заказа."
+      summary: "Инициализация заказа",
+      description: "Инициализация заказа.",
       tags: "API"
     };
   } 
   rpc Pay(PayRequest) returns (Payment) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/pay
-      post: "/api/v1/pay"
+      post: "/api/v1/pay",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Sms payment"
-      description: "Sma payment."
+      summary: "Sms payment",
+      description: "Sma payment.",
       tags: "API"
     };
   }
   rpc Payout(PayoutRequest) returns (PayoutHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/payout
-      post: "/api/v1/payout"
+      post: "/api/v1/payout",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Oct выплата"
-      description: "Oct выплата."
+      summary: "Oct выплата",
+      description: "Oct выплата.",
       tags: "API"
     };
   }
   rpc Refund(Order) returns (RefundHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/refund
-      post: "/api/v1/refund"
+      post: "/api/v1/refund",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Возврат по заказу"
-      description: "Возврат по заказу."
+      summary: "Возврат по заказу",
+      description: "Возврат по заказу.",
       tags: "API"
     };
   }
   rpc Void(Order) returns (VoidHandler) {
     option (google.api.http) = {
       // Route to this method from POST requests to /api/v1/void
-      post: "/api/v1/void"
+      post: "/api/v1/void",
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Отмена заказа"
-      description: "Отмена заказа."
+      summary: "Отмена заказа",
+      description: "Отмена заказа.",
       tags: "API"
     };
   }
@@ -168,13 +177,220 @@ message Payment {
   string id = 1;
 }
 
+message KeyValue {
+  string Key = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Ключ значения",
+    format: "string"
+  }];
+  string Value = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Значение",
+    format: "string"
+  }];
+}
+
+message KeyValueArray {
+  repeated KeyValue key_value = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Массив ключ-значение"
+  }];
+}
+
 message BlockRequest {
-  Payment payment = 1;
-} 
+  string key = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Идентификатор Продавца. Выдается с параметрами тестового/боевого доступа",
+    format: "string"
+  }];
+  PayInfo card = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Данные карты для совершения транзакции",
+    format: "object"
+  }];
+  PaymentToken payment_token = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Токен gpay/applepay/samsungpay",
+    format: "object"
+  }];
+  string merchant_order_id = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Идентификатор платежа в системе Продавца",
+    format: "string"
+  }];	
+  uint32 amount  = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Сумма платежа в копейках (или другая минимальная единица валюты терминала)",
+    format: "integer"
+  }];	
+  Credential credential = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Подтверждение прав доступа и информация об операторе",
+    format: "object"
+  }];	
+  KeyValueArray custom_params_rdy = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Список дополнительных параметров операции в формате 'ключ - значение'",
+    format: "object"
+  }];
+  Split split = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами. Общая сумма всех составных частей должна соответствовать amount",
+    format: "object"
+  }];
+  PayoutInfo payout_info = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Номер карты для зачисления средств, обязательный при операция C2C",
+    format: "object"
+  }];
+}
+
+message PayInfo {
+  string pan = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Номер карты",
+    format: "string"
+  }];
+  uint32 emonth = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Месяц истечения срока действия карты",
+    format: "integer"
+  }];
+  uint32 eyear = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Год истечения срока действия карты",
+    format: "integer"
+  }];	
+  uint32 cvv = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "CVC2/CVV2. Параметр является опциональным",
+    format: "integer"
+  }];	
+  string card_holder = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Фамилия и имя держателя карты",
+    format: "string"
+  }];	
+  string uid = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Идентификатор карты в системе theMAP или значение «Random». При указании значения «Random» выбирается случайная карта из привязанных к данному пользователю",
+    format: "string"
+  }];	
+}
+
+message PaymentToken {
+  string type = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Тип токена",
+    format: "string"
+  }];	
+  string data = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Данные токена",
+    format: "string"
+  }];	
+}
+
+message Credential {
+  string login = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Логин держателя карты, зарегистрированного в системе Продавца. Используются только в случае, если карта сохранена к конкретному пользователю",
+    format: "string"
+  }];	
+  string password = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Пароль держателя карты, зарегистрированного в системе Продавца. Используются только в случае, если карта сохранена к конкретному пользователю",
+    format: "string"
+  }];
+  string merchant_name = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Наименование продавца. Используются только в случае, если карта сохранена за Мерчантом",
+    format: "string"
+  }];
+  string merchant_password = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Пароль Мерчанта для совершения операций. Используются только в случае, если карта сохранена за Мерчантом",
+    format: "string"
+  }];
+  string terminal_password = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Пароль терминала для совершения операций. Используются только в случае, если карта сохранена за терминалом",
+    format: "string"
+  }];
+}
+
+message Split {
+  uint32 split_terminal_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Номер терминала для проведения операции",
+    format: "integer"
+  }];
+  uint32 amount = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Сумма разделения",
+    format: "integer"
+  }];
+  string purpose = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Описание",
+    format: "string"
+  }];
+  uint32 fee = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Размер комиссии",
+    format: "integer"
+  }];
+}
+
+message PayoutInfo {
+  string pan = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Номер карты для зачисления средств, обязательный при операция C2C",
+    format: "string"
+  }];
+}
 
 message BlockHandler {
-  string id = 1;
+  bool success = 1 	[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Флаг успешности операции	true/false",
+    format: "true,false"
+  }];	
+  string merchant_order_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Идентификатор платежа в системе Продавца",
+    format: "string"
+  }];
+  uint32 amount  = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Заблокированная сумма. Передается, если в ответе Success=true",
+    format: "integer"
+  }];	
+  string autcode = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Код авторизации",
+    format: "string"
+  }];	
+  string errcode = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Описание ошибки. Передается, если в ответе Success=false",
+    format: "string"
+  }];	
+  string errmessage = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Опциональный параметр. Дополнительное описание ошибки",
+    format: "string"
+  }];
+  string ascUrl = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Адрес (URL/URI) сервера аутентификации 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
+    format: "string"
+  }];
+  string paReq = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Запрос на аутентификацию 3-D Secure. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
+    format: "string"
+  }];
+  string threeDSKey = 9 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Уникальный идентификатор транзакции. Обязателен, если карта вовлечена в технологию 3-D Secure и Success=true",
+    format: "string"
+  }];
+  string rrn = 10 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "RRN операции",
+    format: "string"
+  }];
+  string panMask = 11 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Маскированный номер карты в формате 123456xxxxxx1234",
+    format: "string"
+  }];
+  string bankName = 12 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Наименование Банка-эмитента",
+    format: "string"
+  }];
+  string processingResponse = 13 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Оригинальный отказ эквайера",
+    format: "string"
+  }];
+  KeyValueArray custom_params_rdy = 14 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Список дополнительных параметров операции",
+    format: "object"
+  }];
+  uint32 feePercent  = 15 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Ставка комиссии за эквайринг",
+    format: "integer"
+  }];
+  uint32 terminalId  = 16 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "ID терминала в системе MAP, по которому фактически выполнена операция",
+    format: "integer"
+  }];
+  string sourceOffice = 17 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Идентификатор организации при оплате в GDS",
+    format: "string"
+  }];
 }
+
 
 message ChargeRequest {
   BlockHandler block = 1;
@@ -202,3 +418,5 @@ message RefundHandler {
 message OrderStatus {
   string status = 1;
 }
+
+
