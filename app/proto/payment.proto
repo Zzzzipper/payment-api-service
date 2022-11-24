@@ -25,31 +25,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 */
 
 service PaymentService {
-  /*
-  rpc AddUser(AddUserRequest) returns (User) {
-    option (google.api.http) = {
-      // Route to this method from POST requests to /api/v1/users
-      post: "/api/v1/users"
-      body: "*"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Add a user"
-      description: "Add a user to the server."
-      tags: "Users"
-    };
-  }
-  rpc ListUsers(ListUsersRequest) returns (stream User) {
-    option (google.api.http) = {
-      // Route to this method from GET requests to /api/v1/users
-      get: "/api/v1/users"
-    };
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "List users"
-      description: "List all users on the server."
-      tags: "Users"
-    };
-  }
-  */
   // Block
   //
   // {{.MethodDescriptorProto.Name}} is a call with the method(s) {{$first := true}}{{range .Bindings}}{{if $first}}{{$first = false}}{{else}}, {{end}}{{.HTTPMethod}}{{end}} within the "{{.Service.Name}}" service.
@@ -163,6 +138,7 @@ message User {
 }
 
 message OrderRequest {
+
 }
 
 message Order {
@@ -223,7 +199,7 @@ message BlockRequest {
     description: "Список дополнительных параметров операции в формате 'ключ - значение'",
     format: "object"
   }];
-  Split split = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  repeated Split split = 8 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами. Общая сумма всех составных частей должна соответствовать amount",
     format: "object"
   }];
@@ -246,9 +222,9 @@ message PayInfo {
     description: "Год истечения срока действия карты",
     format: "integer"
   }];	
-  uint32 cvv = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+  string cvv = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "CVC2/CVV2. Параметр является опциональным",
-    format: "integer"
+    format: "string"
   }];	
   string card_holder = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
     description: "Фамилия и имя держателя карты",

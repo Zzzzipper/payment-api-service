@@ -414,8 +414,11 @@
           "description": "Список дополнительных параметров операции в формате 'ключ - значение'"
         },
         "split": {
+          "type": "array",
           "format": "object",
-          "$ref": "#/definitions/paymentSplit",
+          "items": {
+            "$ref": "#/definitions/paymentSplit"
+          },
           "description": "Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами. Общая сумма всех составных частей должна соответствовать amount"
         },
         "payout_info": {
@@ -536,8 +539,8 @@
           "description": "Год истечения срока действия карты"
         },
         "cvv": {
-          "type": "integer",
-          "format": "integer",
+          "type": "string",
+          "format": "string",
           "description": "CVC2/CVV2. Параметр является опциональным"
         },
         "card_holder": {
