@@ -110,5 +110,6 @@ envConfig:
   SWAGGER_PORT: "9000"
   API_GRPC_PORT: "8000"
   SERVE_HTTP: "true"
+  MAPAPI_ADDR: "https://api-stage.mapcard.pro/Block"
   MERCHANT_GRPC_ADDRESS: "merchants-api:8080"
 
