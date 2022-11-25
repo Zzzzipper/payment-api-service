@@ -28,7 +28,7 @@ var (
 	token    = flag.String("token", "testtoken", "The token to authenticate with")
 )
 
-// version: 0.3.0
+// version: 0.4.0
 func main() {
 
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
