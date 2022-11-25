@@ -2,7 +2,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
   REPO_NAME: payments-api
-  DOCKER_BUILD_ARGS: "GITLAB_DEPENDENCIES_TOKEN=yj7TrYGMyoxRwE2tCSHG"
+  DOCKER_BUILD_ARGS: "--build-arg GITLAB_DEPENDENCIES_TOKEN=yj7TrYGMyoxRwE2tCSHG"
   BINARY_NAME: payments-api
   RELEASE_NAME: payments-api
   SERVICE_NAME: payments-api
