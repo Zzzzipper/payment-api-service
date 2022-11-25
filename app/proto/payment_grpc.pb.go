@@ -8,6 +8,7 @@ package payment
 
 import (
 	context "context"
+	api "gitlab.mapcard.pro/external-map-team/api-proto/payment/api"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -28,14 +29,14 @@ type PaymentServiceClient interface {
 	// It takes in "{{.RequestType.Name}}" and returns a "{{.ResponseType.Name}}".
 	//
 	// {{import "tables.md"}}
-	Block(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockHandler, error)
-	Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*ChargeHandler, error)
-	Get(ctx context.Context, in *Order, opts ...grpc.CallOption) (*OrderStatus, error)
-	Init(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*Order, error)
-	Pay(ctx context.Context, in *PayRequest, opts ...grpc.CallOption) (*Payment, error)
-	Payout(ctx context.Context, in *PayoutRequest, opts ...grpc.CallOption) (*PayoutHandler, error)
-	Refund(ctx context.Context, in *Order, opts ...grpc.CallOption) (*RefundHandler, error)
-	Void(ctx context.Context, in *Order, opts ...grpc.CallOption) (*VoidHandler, error)
+	Block(ctx context.Context, in *api.BlockRequest, opts ...grpc.CallOption) (*api.BlockHandler, error)
+	Charge(ctx context.Context, in *api.ChargeRequest, opts ...grpc.CallOption) (*api.ChargeHandler, error)
+	Get(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.OrderStatus, error)
+	Init(ctx context.Context, in *api.OrderRequest, opts ...grpc.CallOption) (*api.Order, error)
+	Pay(ctx context.Context, in *api.PayRequest, opts ...grpc.CallOption) (*api.Payment, error)
+	Payout(ctx context.Context, in *api.PayoutRequest, opts ...grpc.CallOption) (*api.PayoutHandler, error)
+	Refund(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.RefundHandler, error)
+	Void(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.VoidHandler, error)
 }
 
 type paymentServiceClient struct {
@@ -46,8 +47,8 @@ func NewPaymentServiceClient(cc grpc.ClientConnInterface) PaymentServiceClient {
 	return &paymentServiceClient{cc}
 }
 
-func (c *paymentServiceClient) Block(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*BlockHandler, error) {
-	out := new(BlockHandler)
+func (c *paymentServiceClient) Block(ctx context.Context, in *api.BlockRequest, opts ...grpc.CallOption) (*api.BlockHandler, error) {
+	out := new(api.BlockHandler)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Block", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -55,8 +56,8 @@ func (c *paymentServiceClient) Block(ctx context.Context, in *BlockRequest, opts
 	return out, nil
 }
 
-func (c *paymentServiceClient) Charge(ctx context.Context, in *ChargeRequest, opts ...grpc.CallOption) (*ChargeHandler, error) {
-	out := new(ChargeHandler)
+func (c *paymentServiceClient) Charge(ctx context.Context, in *api.ChargeRequest, opts ...grpc.CallOption) (*api.ChargeHandler, error) {
+	out := new(api.ChargeHandler)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Charge", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -64,8 +65,8 @@ func (c *paymentServiceClient) Charge(ctx context.Context, in *ChargeRequest, op
 	return out, nil
 }
 
-func (c *paymentServiceClient) Get(ctx context.Context, in *Order, opts ...grpc.CallOption) (*OrderStatus, error) {
-	out := new(OrderStatus)
+func (c *paymentServiceClient) Get(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.OrderStatus, error) {
+	out := new(api.OrderStatus)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -73,8 +74,8 @@ func (c *paymentServiceClient) Get(ctx context.Context, in *Order, opts ...grpc.
 	return out, nil
 }
 
-func (c *paymentServiceClient) Init(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*Order, error) {
-	out := new(Order)
+func (c *paymentServiceClient) Init(ctx context.Context, in *api.OrderRequest, opts ...grpc.CallOption) (*api.Order, error) {
+	out := new(api.Order)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Init", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -82,8 +83,8 @@ func (c *paymentServiceClient) Init(ctx context.Context, in *OrderRequest, opts 
 	return out, nil
 }
 
-func (c *paymentServiceClient) Pay(ctx context.Context, in *PayRequest, opts ...grpc.CallOption) (*Payment, error) {
-	out := new(Payment)
+func (c *paymentServiceClient) Pay(ctx context.Context, in *api.PayRequest, opts ...grpc.CallOption) (*api.Payment, error) {
+	out := new(api.Payment)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Pay", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -91,8 +92,8 @@ func (c *paymentServiceClient) Pay(ctx context.Context, in *PayRequest, opts ...
 	return out, nil
 }
 
-func (c *paymentServiceClient) Payout(ctx context.Context, in *PayoutRequest, opts ...grpc.CallOption) (*PayoutHandler, error) {
-	out := new(PayoutHandler)
+func (c *paymentServiceClient) Payout(ctx context.Context, in *api.PayoutRequest, opts ...grpc.CallOption) (*api.PayoutHandler, error) {
+	out := new(api.PayoutHandler)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Payout", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -100,8 +101,8 @@ func (c *paymentServiceClient) Payout(ctx context.Context, in *PayoutRequest, op
 	return out, nil
 }
 
-func (c *paymentServiceClient) Refund(ctx context.Context, in *Order, opts ...grpc.CallOption) (*RefundHandler, error) {
-	out := new(RefundHandler)
+func (c *paymentServiceClient) Refund(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.RefundHandler, error) {
+	out := new(api.RefundHandler)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Refund", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -109,8 +110,8 @@ func (c *paymentServiceClient) Refund(ctx context.Context, in *Order, opts ...gr
 	return out, nil
 }
 
-func (c *paymentServiceClient) Void(ctx context.Context, in *Order, opts ...grpc.CallOption) (*VoidHandler, error) {
-	out := new(VoidHandler)
+func (c *paymentServiceClient) Void(ctx context.Context, in *api.Order, opts ...grpc.CallOption) (*api.VoidHandler, error) {
+	out := new(api.VoidHandler)
 	err := c.cc.Invoke(ctx, "/payment.PaymentService/Void", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -128,42 +129,42 @@ type PaymentServiceServer interface {
 	// It takes in "{{.RequestType.Name}}" and returns a "{{.ResponseType.Name}}".
 	//
 	// {{import "tables.md"}}
-	Block(context.Context, *BlockRequest) (*BlockHandler, error)
-	Charge(context.Context, *ChargeRequest) (*ChargeHandler, error)
-	Get(context.Context, *Order) (*OrderStatus, error)
-	Init(context.Context, *OrderRequest) (*Order, error)
-	Pay(context.Context, *PayRequest) (*Payment, error)
-	Payout(context.Context, *PayoutRequest) (*PayoutHandler, error)
-	Refund(context.Context, *Order) (*RefundHandler, error)
-	Void(context.Context, *Order) (*VoidHandler, error)
+	Block(context.Context, *api.BlockRequest) (*api.BlockHandler, error)
+	Charge(context.Context, *api.ChargeRequest) (*api.ChargeHandler, error)
+	Get(context.Context, *api.Order) (*api.OrderStatus, error)
+	Init(context.Context, *api.OrderRequest) (*api.Order, error)
+	Pay(context.Context, *api.PayRequest) (*api.Payment, error)
+	Payout(context.Context, *api.PayoutRequest) (*api.PayoutHandler, error)
+	Refund(context.Context, *api.Order) (*api.RefundHandler, error)
+	Void(context.Context, *api.Order) (*api.VoidHandler, error)
 }
 
 // UnimplementedPaymentServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedPaymentServiceServer struct {
 }
 
-func (UnimplementedPaymentServiceServer) Block(context.Context, *BlockRequest) (*BlockHandler, error) {
+func (UnimplementedPaymentServiceServer) Block(context.Context, *api.BlockRequest) (*api.BlockHandler, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Block not implemented")
 }
-func (UnimplementedPaymentServiceServer) Charge(context.Context, *ChargeRequest) (*ChargeHandler, error) {
+func (UnimplementedPaymentServiceServer) Charge(context.Context, *api.ChargeRequest) (*api.ChargeHandler, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Charge not implemented")
 }
-func (UnimplementedPaymentServiceServer) Get(context.Context, *Order) (*OrderStatus, error) {
+func (UnimplementedPaymentServiceServer) Get(context.Context, *api.Order) (*api.OrderStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedPaymentServiceServer) Init(context.Context, *OrderRequest) (*Order, error) {
+func (UnimplementedPaymentServiceServer) Init(context.Context, *api.OrderRequest) (*api.Order, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Init not implemented")
 }
-func (UnimplementedPaymentServiceServer) Pay(context.Context, *PayRequest) (*Payment, error) {
+func (UnimplementedPaymentServiceServer) Pay(context.Context, *api.PayRequest) (*api.Payment, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pay not implemented")
 }
-func (UnimplementedPaymentServiceServer) Payout(context.Context, *PayoutRequest) (*PayoutHandler, error) {
+func (UnimplementedPaymentServiceServer) Payout(context.Context, *api.PayoutRequest) (*api.PayoutHandler, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Payout not implemented")
 }
-func (UnimplementedPaymentServiceServer) Refund(context.Context, *Order) (*RefundHandler, error) {
+func (UnimplementedPaymentServiceServer) Refund(context.Context, *api.Order) (*api.RefundHandler, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Refund not implemented")
 }
-func (UnimplementedPaymentServiceServer) Void(context.Context, *Order) (*VoidHandler, error) {
+func (UnimplementedPaymentServiceServer) Void(context.Context, *api.Order) (*api.VoidHandler, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Void not implemented")
 }
 
@@ -179,7 +180,7 @@ func RegisterPaymentServiceServer(s grpc.ServiceRegistrar, srv PaymentServiceSer
 }
 
 func _PaymentService_Block_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BlockRequest)
+	in := new(api.BlockRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -191,13 +192,13 @@ func _PaymentService_Block_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/payment.PaymentService/Block",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Block(ctx, req.(*BlockRequest))
+		return srv.(PaymentServiceServer).Block(ctx, req.(*api.BlockRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Charge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChargeRequest)
+	in := new(api.ChargeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -209,13 +210,13 @@ func _PaymentService_Charge_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/payment.PaymentService/Charge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Charge(ctx, req.(*ChargeRequest))
+		return srv.(PaymentServiceServer).Charge(ctx, req.(*api.ChargeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Order)
+	in := new(api.Order)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -227,13 +228,13 @@ func _PaymentService_Get_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/payment.PaymentService/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Get(ctx, req.(*Order))
+		return srv.(PaymentServiceServer).Get(ctx, req.(*api.Order))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Init_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderRequest)
+	in := new(api.OrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -245,13 +246,13 @@ func _PaymentService_Init_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/payment.PaymentService/Init",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Init(ctx, req.(*OrderRequest))
+		return srv.(PaymentServiceServer).Init(ctx, req.(*api.OrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Pay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PayRequest)
+	in := new(api.PayRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -263,13 +264,13 @@ func _PaymentService_Pay_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/payment.PaymentService/Pay",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Pay(ctx, req.(*PayRequest))
+		return srv.(PaymentServiceServer).Pay(ctx, req.(*api.PayRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Payout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PayoutRequest)
+	in := new(api.PayoutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -281,13 +282,13 @@ func _PaymentService_Payout_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/payment.PaymentService/Payout",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Payout(ctx, req.(*PayoutRequest))
+		return srv.(PaymentServiceServer).Payout(ctx, req.(*api.PayoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Refund_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Order)
+	in := new(api.Order)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -299,13 +300,13 @@ func _PaymentService_Refund_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/payment.PaymentService/Refund",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Refund(ctx, req.(*Order))
+		return srv.(PaymentServiceServer).Refund(ctx, req.(*api.Order))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PaymentService_Void_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Order)
+	in := new(api.Order)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -317,7 +318,7 @@ func _PaymentService_Void_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/payment.PaymentService/Void",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServiceServer).Void(ctx, req.(*Order))
+		return srv.(PaymentServiceServer).Void(ctx, req.(*api.Order))
 	}
 	return interceptor(ctx, in, info, handler)
 }

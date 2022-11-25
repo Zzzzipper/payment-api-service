@@ -17,6 +17,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"gitlab.mapcard.pro/external-map-team/api-proto/payment/api"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -34,7 +35,7 @@ var _ = descriptor.ForMessage
 var _ = metadata.Join
 
 func request_PaymentService_Block_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq BlockRequest
+	var protoReq api.BlockRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -51,7 +52,7 @@ func request_PaymentService_Block_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func local_request_PaymentService_Block_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq BlockRequest
+	var protoReq api.BlockRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -68,7 +69,7 @@ func local_request_PaymentService_Block_0(ctx context.Context, marshaler runtime
 }
 
 func request_PaymentService_Charge_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChargeRequest
+	var protoReq api.ChargeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -85,7 +86,7 @@ func request_PaymentService_Charge_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_PaymentService_Charge_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ChargeRequest
+	var protoReq api.ChargeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -102,7 +103,7 @@ func local_request_PaymentService_Charge_0(ctx context.Context, marshaler runtim
 }
 
 func request_PaymentService_Get_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -119,7 +120,7 @@ func request_PaymentService_Get_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func local_request_PaymentService_Get_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -136,7 +137,7 @@ func local_request_PaymentService_Get_0(ctx context.Context, marshaler runtime.M
 }
 
 func request_PaymentService_Init_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrderRequest
+	var protoReq api.OrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -153,7 +154,7 @@ func request_PaymentService_Init_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_PaymentService_Init_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrderRequest
+	var protoReq api.OrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -170,7 +171,7 @@ func local_request_PaymentService_Init_0(ctx context.Context, marshaler runtime.
 }
 
 func request_PaymentService_Pay_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PayRequest
+	var protoReq api.PayRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -187,7 +188,7 @@ func request_PaymentService_Pay_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func local_request_PaymentService_Pay_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PayRequest
+	var protoReq api.PayRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -204,7 +205,7 @@ func local_request_PaymentService_Pay_0(ctx context.Context, marshaler runtime.M
 }
 
 func request_PaymentService_Payout_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PayoutRequest
+	var protoReq api.PayoutRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -221,7 +222,7 @@ func request_PaymentService_Payout_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_PaymentService_Payout_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PayoutRequest
+	var protoReq api.PayoutRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -238,7 +239,7 @@ func local_request_PaymentService_Payout_0(ctx context.Context, marshaler runtim
 }
 
 func request_PaymentService_Refund_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -255,7 +256,7 @@ func request_PaymentService_Refund_0(ctx context.Context, marshaler runtime.Mars
 }
 
 func local_request_PaymentService_Refund_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -272,7 +273,7 @@ func local_request_PaymentService_Refund_0(ctx context.Context, marshaler runtim
 }
 
 func request_PaymentService_Void_0(ctx context.Context, marshaler runtime.Marshaler, client PaymentServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -289,7 +290,7 @@ func request_PaymentService_Void_0(ctx context.Context, marshaler runtime.Marsha
 }
 
 func local_request_PaymentService_Void_0(ctx context.Context, marshaler runtime.Marshaler, server PaymentServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq api.Order
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)

@@ -11,8 +11,7 @@ import (
 	"sync"
 	"time"
 
-	pbPayment "payment-api-service/proto"
-
+	"gitlab.mapcard.pro/external-map-team/api-proto/payment/api"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -30,7 +29,7 @@ func New() *Backend {
 	}
 }
 
-func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPayment.BlockHandler, error) {
+func (b *Backend) Block(ctx context.Context, in *api.BlockRequest) (*api.BlockHandler, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -52,7 +51,7 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 		fmt.Println("BlockRequest", in)
 	}
 
-	var block *pbPayment.BlockHandler
+	var block *api.BlockHandler
 
 	requestURL := os.Getenv("MAPAPI_ADDR")
 	if requestURL != "" {
@@ -75,7 +74,7 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 		res, err = client.Do(req)
 		if err != nil {
 			fmt.Printf("client: error making http request: %s\n", err)
-			block = &pbPayment.BlockHandler{
+			block = &api.BlockHandler{
 				Success:    false,
 				ErrCode:    "COMMUNICATE_ERROR",
 				ErrMessage: "failed connection to MAP API",
@@ -84,7 +83,7 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 			resBody, err := ioutil.ReadAll(res.Body)
 			if err != nil {
 				fmt.Printf("client: could not read response body: %s\n", err)
-				block = &pbPayment.BlockHandler{
+				block = &api.BlockHandler{
 					Success:    false,
 					ErrCode:    "EMPTY_RESPONSE",
 					ErrMessage: "processing error",
@@ -92,12 +91,12 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 			}
 			fmt.Printf("client: response body: %s\n", resBody)
 
-			block = &pbPayment.BlockHandler{}
+			block = &api.BlockHandler{}
 
 			err = json.Unmarshal(resBody, block)
 			if err != nil {
 				fmt.Printf("client: could not parse response body: %s\n", err)
-				block = &pbPayment.BlockHandler{
+				block = &api.BlockHandler{
 					Success:    false,
 					ErrCode:    "ENCODING_ERROR",
 					ErrMessage: "encoding response error",
@@ -105,7 +104,7 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 			}
 		}
 	} else {
-		block = &pbPayment.BlockHandler{
+		block = &api.BlockHandler{
 			Success:    false,
 			ErrCode:    "NOT_FOUND",
 			ErrMessage: "address MAP API not present",
@@ -115,7 +114,7 @@ func (b *Backend) Block(ctx context.Context, in *pbPayment.BlockRequest) (*pbPay
 	return block, nil
 }
 
-func (b *Backend) Charge(ctx context.Context, in *pbPayment.ChargeRequest) (*pbPayment.ChargeHandler, error) {
+func (b *Backend) Charge(ctx context.Context, in *api.ChargeRequest) (*api.ChargeHandler, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -124,14 +123,14 @@ func (b *Backend) Charge(ctx context.Context, in *pbPayment.ChargeRequest) (*pbP
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	charge := &pbPayment.ChargeHandler{
+	charge := &api.ChargeHandler{
 		Id: "charge_handler",
 	}
 
 	return charge, nil
 }
 
-func (b *Backend) Get(ctx context.Context, in *pbPayment.Order) (*pbPayment.OrderStatus, error) {
+func (b *Backend) Get(ctx context.Context, in *api.Order) (*api.OrderStatus, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -140,14 +139,14 @@ func (b *Backend) Get(ctx context.Context, in *pbPayment.Order) (*pbPayment.Orde
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	status := &pbPayment.OrderStatus{
+	status := &api.OrderStatus{
 		Status: "status ok",
 	}
 
 	return status, nil
 }
 
-func (b *Backend) Init(ctx context.Context, in *pbPayment.OrderRequest) (*pbPayment.Order, error) {
+func (b *Backend) Init(ctx context.Context, in *api.OrderRequest) (*api.Order, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -156,14 +155,14 @@ func (b *Backend) Init(ctx context.Context, in *pbPayment.OrderRequest) (*pbPaym
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	order := &pbPayment.Order{
+	order := &api.Order{
 		Id: "order ",
 	}
 
 	return order, nil
 }
 
-func (b *Backend) Pay(ctx context.Context, in *pbPayment.PayRequest) (*pbPayment.Payment, error) {
+func (b *Backend) Pay(ctx context.Context, in *api.PayRequest) (*api.Payment, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -172,14 +171,14 @@ func (b *Backend) Pay(ctx context.Context, in *pbPayment.PayRequest) (*pbPayment
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	payment := &pbPayment.Payment{
+	payment := &api.Payment{
 		Id: "block_handler",
 	}
 
 	return payment, nil
 }
 
-func (b *Backend) Payout(ctx context.Context, in *pbPayment.PayoutRequest) (*pbPayment.PayoutHandler, error) {
+func (b *Backend) Payout(ctx context.Context, in *api.PayoutRequest) (*api.PayoutHandler, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -188,14 +187,14 @@ func (b *Backend) Payout(ctx context.Context, in *pbPayment.PayoutRequest) (*pbP
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	payout := &pbPayment.PayoutHandler{
+	payout := &api.PayoutHandler{
 		Id: "block_handler",
 	}
 
 	return payout, nil
 }
 
-func (b *Backend) Refund(ctx context.Context, in *pbPayment.Order) (*pbPayment.RefundHandler, error) {
+func (b *Backend) Refund(ctx context.Context, in *api.Order) (*api.RefundHandler, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -204,14 +203,14 @@ func (b *Backend) Refund(ctx context.Context, in *pbPayment.Order) (*pbPayment.R
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	refund := &pbPayment.RefundHandler{
+	refund := &api.RefundHandler{
 		Id: "block_handler",
 	}
 
 	return refund, nil
 }
 
-func (b *Backend) Void(ctx context.Context, in *pbPayment.Order) (*pbPayment.VoidHandler, error) {
+func (b *Backend) Void(ctx context.Context, in *api.Order) (*api.VoidHandler, error) {
 	_, ok := GetUserMetadata(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user authentication found")
@@ -220,7 +219,7 @@ func (b *Backend) Void(ctx context.Context, in *pbPayment.Order) (*pbPayment.Voi
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	void := &pbPayment.VoidHandler{
+	void := &api.VoidHandler{
 		Id: "block_handler",
 	}
 

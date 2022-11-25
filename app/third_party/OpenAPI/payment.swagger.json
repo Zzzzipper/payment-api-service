@@ -20,7 +20,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentBlockHandler"
+              "$ref": "#/definitions/apiBlockHandler"
             }
           },
           "default": {
@@ -36,7 +36,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentBlockRequest"
+              "$ref": "#/definitions/apiBlockRequest"
             }
           }
         ],
@@ -54,7 +54,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentChargeHandler"
+              "$ref": "#/definitions/apiChargeHandler"
             }
           },
           "default": {
@@ -70,7 +70,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentChargeRequest"
+              "$ref": "#/definitions/apiChargeRequest"
             }
           }
         ],
@@ -88,7 +88,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentOrderStatus"
+              "$ref": "#/definitions/apiOrderStatus"
             }
           },
           "default": {
@@ -104,7 +104,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentOrder"
+              "$ref": "#/definitions/apiOrder"
             }
           }
         ],
@@ -122,7 +122,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentOrder"
+              "$ref": "#/definitions/apiOrder"
             }
           },
           "default": {
@@ -138,7 +138,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentOrderRequest"
+              "$ref": "#/definitions/apiOrderRequest"
             }
           }
         ],
@@ -156,7 +156,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentPayment"
+              "$ref": "#/definitions/apiPayment"
             }
           },
           "default": {
@@ -172,7 +172,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentPayRequest"
+              "$ref": "#/definitions/apiPayRequest"
             }
           }
         ],
@@ -190,7 +190,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentPayoutHandler"
+              "$ref": "#/definitions/apiPayoutHandler"
             }
           },
           "default": {
@@ -206,7 +206,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentPayoutRequest"
+              "$ref": "#/definitions/apiPayoutRequest"
             }
           }
         ],
@@ -224,7 +224,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentRefundHandler"
+              "$ref": "#/definitions/apiRefundHandler"
             }
           },
           "default": {
@@ -240,7 +240,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentOrder"
+              "$ref": "#/definitions/apiOrder"
             }
           }
         ],
@@ -258,7 +258,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/paymentVoidHandler"
+              "$ref": "#/definitions/apiVoidHandler"
             }
           },
           "default": {
@@ -274,7 +274,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/paymentOrder"
+              "$ref": "#/definitions/apiOrder"
             }
           }
         ],
@@ -285,7 +285,7 @@
     }
   },
   "definitions": {
-    "paymentBlockHandler": {
+    "apiBlockHandler": {
       "type": "object",
       "properties": {
         "Success": {
@@ -355,7 +355,7 @@
         },
         "CustomParams": {
           "format": "object",
-          "$ref": "#/definitions/paymentKeyValueArray",
+          "$ref": "#/definitions/apiKeyValueArray",
           "description": "Список дополнительных параметров операции"
         },
         "FeePercent": {
@@ -375,7 +375,7 @@
         }
       }
     },
-    "paymentBlockRequest": {
+    "apiBlockRequest": {
       "type": "object",
       "properties": {
         "key": {
@@ -385,12 +385,12 @@
         },
         "card": {
           "format": "object",
-          "$ref": "#/definitions/paymentPayInfo",
+          "$ref": "#/definitions/apiPayInfo",
           "description": "Данные карты для совершения транзакции"
         },
         "payment_token": {
           "format": "object",
-          "$ref": "#/definitions/paymentPaymentToken",
+          "$ref": "#/definitions/apiPaymentToken",
           "description": "Токен gpay/applepay/samsungpay"
         },
         "merchant_order_id": {
@@ -405,30 +405,31 @@
         },
         "credential": {
           "format": "object",
-          "$ref": "#/definitions/paymentCredential",
+          "$ref": "#/definitions/apiCredential",
           "description": "Подтверждение прав доступа и информация об операторе"
         },
         "custom_params_rdy": {
           "format": "object",
-          "$ref": "#/definitions/paymentKeyValueArray",
+          "$ref": "#/definitions/apiKeyValueArray",
           "description": "Список дополнительных параметров операции в формате 'ключ - значение'"
         },
         "split": {
           "type": "array",
           "format": "object",
           "items": {
-            "$ref": "#/definitions/paymentSplit"
+            "$ref": "#/definitions/apiSplit"
           },
           "description": "Используется для разделение суммы произведенного списания на составные части для последующих расчетов с контрагентами. Общая сумма всех составных частей должна соответствовать amount"
         },
         "payout_info": {
           "format": "object",
-          "$ref": "#/definitions/paymentPayoutInfo",
+          "$ref": "#/definitions/apiPayoutInfo",
           "description": "Номер карты для зачисления средств, обязательный при операция C2C"
         }
-      }
+      },
+      "title": "Block method issues"
     },
-    "paymentChargeHandler": {
+    "apiChargeHandler": {
       "type": "object",
       "properties": {
         "id": {
@@ -436,15 +437,16 @@
         }
       }
     },
-    "paymentChargeRequest": {
+    "apiChargeRequest": {
       "type": "object",
       "properties": {
         "block": {
-          "$ref": "#/definitions/paymentBlockHandler"
+          "$ref": "#/definitions/apiBlockHandler"
         }
-      }
+      },
+      "title": "Charge method issues"
     },
-    "paymentCredential": {
+    "apiCredential": {
       "type": "object",
       "properties": {
         "login": {
@@ -474,7 +476,7 @@
         }
       }
     },
-    "paymentKeyValue": {
+    "apiKeyValue": {
       "type": "object",
       "properties": {
         "Key": {
@@ -489,19 +491,19 @@
         }
       }
     },
-    "paymentKeyValueArray": {
+    "apiKeyValueArray": {
       "type": "object",
       "properties": {
         "key_value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/paymentKeyValue"
+            "$ref": "#/definitions/apiKeyValue"
           },
           "description": "Массив ключ-значение"
         }
       }
     },
-    "paymentOrder": {
+    "apiOrder": {
       "type": "object",
       "properties": {
         "id": {
@@ -509,10 +511,11 @@
         }
       }
     },
-    "paymentOrderRequest": {
-      "type": "object"
+    "apiOrderRequest": {
+      "type": "object",
+      "title": "Initmethod issues"
     },
-    "paymentOrderStatus": {
+    "apiOrderStatus": {
       "type": "object",
       "properties": {
         "status": {
@@ -520,7 +523,7 @@
         }
       }
     },
-    "paymentPayInfo": {
+    "apiPayInfo": {
       "type": "object",
       "properties": {
         "pan": {
@@ -555,15 +558,15 @@
         }
       }
     },
-    "paymentPayRequest": {
+    "apiPayRequest": {
       "type": "object",
       "properties": {
         "order": {
-          "$ref": "#/definitions/paymentOrder"
+          "$ref": "#/definitions/apiOrder"
         }
       }
     },
-    "paymentPayment": {
+    "apiPayment": {
       "type": "object",
       "properties": {
         "id": {
@@ -571,7 +574,7 @@
         }
       }
     },
-    "paymentPaymentToken": {
+    "apiPaymentToken": {
       "type": "object",
       "properties": {
         "type": {
@@ -586,7 +589,7 @@
         }
       }
     },
-    "paymentPayoutHandler": {
+    "apiPayoutHandler": {
       "type": "object",
       "properties": {
         "id": {
@@ -594,7 +597,7 @@
         }
       }
     },
-    "paymentPayoutInfo": {
+    "apiPayoutInfo": {
       "type": "object",
       "properties": {
         "pan": {
@@ -604,10 +607,10 @@
         }
       }
     },
-    "paymentPayoutRequest": {
+    "apiPayoutRequest": {
       "type": "object"
     },
-    "paymentRefundHandler": {
+    "apiRefundHandler": {
       "type": "object",
       "properties": {
         "id": {
@@ -615,7 +618,7 @@
         }
       }
     },
-    "paymentSplit": {
+    "apiSplit": {
       "type": "object",
       "properties": {
         "split_terminal_id": {
@@ -640,7 +643,7 @@
         }
       }
     },
-    "paymentVoidHandler": {
+    "apiVoidHandler": {
       "type": "object",
       "properties": {
         "id": {
