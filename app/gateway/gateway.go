@@ -34,6 +34,17 @@ func getOpenAPIHandler() http.Handler {
 	return http.FileServer(http.FS(subFS))
 }
 
+// getTestAPIHandler serves an test api UI.
+func getTestAPIHandler() http.Handler {
+	mime.AddExtensionType(".svg", "image/svg+xml")
+	// Use subdirectory in embedded files
+	subFS, err := fs.Sub(third_party.TestAPI, "TestAPI")
+	if err != nil {
+		panic("couldn't create sub filesystem: " + err.Error())
+	}
+	return http.FileServer(http.FS(subFS))
+}
+
 // Run runs the gRPC-Gateway, dialling the provided address.
 func Run(dialAddr string) error {
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
@@ -72,6 +83,7 @@ func Run(dialAddr string) error {
 	}
 
 	oa := getOpenAPIHandler()
+	// ta := getTestAPIHandler()
 
 	httpPort := os.Getenv("SWAGGER_PORT")
 	if httpPort == "" {
@@ -82,10 +94,15 @@ func Run(dialAddr string) error {
 	gwServer := &http.Server{
 		Addr: webAddr,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if strings.HasPrefix(r.URL.Path, "/api") {
-				gwmux.ServeHTTP(w, r)
-				return
-			}
+			// if strings.HasPrefix(r.URL.Path, "/api") {
+			// 	gwmux.ServeHTTP(w, r)
+			// 	return
+			// }
+			// if strings.HasPrefix(r.URL.Path, "/api") {
+			// 	fmt.Println(r.URL.Path)
+			// 	ta.ServeHTTP(w, r)
+			// 	return
+			// }
 			oa.ServeHTTP(w, r)
 		}),
 	}
