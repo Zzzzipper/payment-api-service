@@ -6,3 +6,4 @@ import (
 
 //go:embed OpenAPI/*
 var OpenAPI embed.FS
+var TestAPI embed.FS
